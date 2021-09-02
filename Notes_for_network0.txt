@@ -1,0 +1,47 @@
+import network0
+net=network0.Network([784, 30, 10],5)
+import mnist_loader
+training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+training_data = list(training_data)
+net.SGD(training_data, 30, 3.0, test_data=test_data)
+
+import numpy as np
+n_training=len(training_data)
+
+mini_batch_size=10
+
+mini_batches = [training_data[k:k+mini_batch_size]  for k in range(0, n_training, mini_batch_size)]
+
+mini_batch=mini_batches[0]
+
+x=np.array([np.ravel(a[0]) for a in mini_batch]) # x is the input array of the batches
+
+y=np.array([np.ravel(b[1])for b in mini_batch])
+
+delta_nabla_b, delta_nabla_w = net.backprop(x, y)
+
+for b, w in zip(net.biases, weights):  
+    a = sigmoid(np.dot(w, a)+b)
+    print(w.shape)
+
+reshape(mini_batch_size,activations[-l-1].shape[1],1)
+
+
+        nabla_b[-1] = delta.transpose()
+        nabla_w[-1] = np.dot(activations[-2].reshape(mini_batch_size,activations[-2].shape[1],1).transpose(), delta.reshape(mini_batch_size,len(delta),1))
+
+
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            delta = np.dot(delta, self.weights[-l+1].transpose()) * sp
+            nabla_b[-l] = delta.transpose()
+            # each element is of the form M*10
+            nabla_w[-l] = np.dot(activations[-l-1].transpose().reshape(activations[-l-1].shape[1],mini_batch_size,1),delta.reshape(mini_batch_size,delta.shape[1],1))
+            # each element is of the form 10*10 which are sums of M weight derivative matrices
+        return (nabla_b, nabla_w)
+
+python -m network0test
+
+the problem is perhaps due to the fact that after each mini batch has been trained, the self.biases_batch is not updated, so after each feedfoward action,
+the error computed remains the same, which leads to inaccuracies
